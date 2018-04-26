@@ -2,7 +2,7 @@ require 'journey'
 
 describe Journey do
   let(:oyster) { Oystercard.new }
-  let(:subject) { Journey.new(1)} # KNOWN PROBLEM: USING A MAIC NUM
+  let(:subject) { Journey.new(1)} # KNOWN PROBLEM: USING A MAGIC NUM
 
   context 'On set-up' do
     it '#in_journey? should be false' do
