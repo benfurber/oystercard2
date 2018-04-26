@@ -9,19 +9,26 @@ describe Journey do
       expect(subject.entry_station).to eq entry_station
     end
 
-    it 'defaults to nil when no entry station is provided' do
+    it 'defaults entry_station to nil when no entry station is provided' do
       new_journey = Journey.new
       expect(new_journey.entry_station).to eq nil
+    end
+
+    it 'defaults exit_station to nil' do
+      expect(subject.exit_station).to eq nil
     end
 
     it '#complete? should be false' do
       expect(subject.complete?).to eq false
     end
+
+
   end
 
   context 'journey card usage' do
     let(:exit_station) { 'Station B' }
     before { subject.add_exit_station(exit_station) }
+
 
     describe '#add_exit_station method' do
       it 'should respond to #add_exit_station' do
@@ -32,5 +39,6 @@ describe Journey do
         expect(subject.complete?).to be true
       end
     end
+
   end
 end
