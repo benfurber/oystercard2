@@ -19,7 +19,7 @@ describe 'Feature Test', :feature do
     oystercard.touch_in(entry_station)
     oystercard.touch_in(entry_station)
     expect(oystercard).to be_in_journey
-    expect(oystercard.journey_history.count).to eq 2
+    expect(oystercard.journey_log.journey_history.count).to eq 2
     expect(oystercard.balance).to eq 4
   end
 
@@ -27,7 +27,7 @@ describe 'Feature Test', :feature do
     oystercard.top_up(10)
     oystercard.touch_out(exit_station)
     expect(oystercard).not_to be_in_journey
-    expect(oystercard.journey_history.count).to eq 1
+    expect(oystercard.journey_log.journey_history.count).to eq 1
     expect(oystercard.balance).to eq 4
   end
 end

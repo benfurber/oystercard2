@@ -7,8 +7,8 @@ describe Oystercard do
     expect(subject.in_journey?).to eq false
   end
 
-  it 'should have an empty @journey_history' do
-    expect(subject.journey_history).to be_empty
+  it 'should have a @journey_log' do
+    expect(subject.journey_log).to be_an_instance_of(Journeylog)
   end
 
   describe '#top_up' do
@@ -47,9 +47,8 @@ describe Oystercard do
         expect { subject.touch_in(entry_station) }.to raise_error RuntimeError
       end
 
-      it 'should store the Journey object in #journey_history' do
-        top_up_touch_in
-        expect(subject.journey_history).to include(an_instance_of(Journey))
+      it 'should send the right message to #journey_log' do
+        expect(journey_log).to receive(:start).with(entry_station)
       end
     end
 

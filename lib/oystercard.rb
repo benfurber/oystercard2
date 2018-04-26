@@ -2,22 +2,21 @@ require 'journey'
 require 'pry'
 require 'pry-byebug'
 
-
 # The main Ostercard object
 class Oystercard
-  attr_reader :balance, :journey_history
+  attr_reader :balance, :journey_log
 
   LIMIT = 90
   MINIMUM_VALUE = 1
 
   def initialize
     @balance = 0
-    @journey_history = []
+    @journey_log = Journeylog.new
     @in_journey = false
   end
 
   def in_journey?
-    return false if @journey_history.empty?
+    return false if @journey_log.journey_history.empty?
     !current_journey.complete?
   end
 
@@ -29,7 +28,7 @@ class Oystercard
 
   def touch_out(exit_station)
     create_journey if !in_journey?
-    current_journey.add_exit_station(exit_station)
+    journey_log.finish(exit_station)
     deduct(current_journey.fare)
   end
 
@@ -45,12 +44,12 @@ class Oystercard
     @balance -= value
   end
 
-  def create_journey(entry_station =nil)
-    @journey_history << Journey.new(entry_station)
+  def create_journey(entry_station = nil)
+    @journey_log.start(entry_station)
   end
 
   def current_journey
-    @journey_history.last
+    @journey_log.journey_history.last
   end
 
   def touch_in_check

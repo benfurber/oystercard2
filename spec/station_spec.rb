@@ -1,5 +1,3 @@
-require 'station'
-
 describe Station do
   let(:station) { 'Victoria Station' }
   let(:zone) { 1 }
