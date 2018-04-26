@@ -2,7 +2,7 @@ require 'journey'
 
 describe Journey do
   let(:entry_station) { double 'Station A' }
-  let(:subject) { Journey.new(entry_station)} # KNOWN PROBLEM: USING A MAGIC NUM
+  let(:subject) { Journey.new(entry_station)}
 
   context 'On set-up' do
     it 'it has an entry station when provided' do
