@@ -4,7 +4,7 @@ describe 'Feature Test', :feature do
   let(:entry_station)  {Station.new('Oxford Circus', 1)}
   let(:exit_station) { Station.new('London Bridge', 1) }
 
-  it 'logs a standard journey' do
+  it 'logs a standard journey and deducted normal fare' do
     oystercard.top_up(10)
     expect(oystercard.balance).to eq 10
     oystercard.touch_in(entry_station)
@@ -14,7 +14,7 @@ describe 'Feature Test', :feature do
     expect(oystercard.balance).to eq 9
   end
 
-  it 'trys to touch in twice' do
+  it 'trys to touch in twice and deducted penalty fare' do
     oystercard.top_up(10)
     oystercard.touch_in(entry_station)
     oystercard.touch_in(entry_station)
@@ -23,7 +23,7 @@ describe 'Feature Test', :feature do
     expect(oystercard.balance).to eq 4
   end
 
-  it 'tries to touch out twice' do
+  it 'tries to touch out twice and deducted penalty fare' do
     oystercard.top_up(10)
     oystercard.touch_out(exit_station)
     expect(oystercard).not_to be_in_journey

@@ -17,14 +17,9 @@ describe Oystercard do
       expect(subject.balance).to eq 5
     end
 
-    it 'raises an error during top-up when the balance exceeds 90' do
+    it 'raises an error during top-up when the balance exceeds £90' do
       expect { subject.top_up(Oystercard::LIMIT + 1)
       }.to raise_error "Maximum limit of £#{Oystercard::LIMIT} exceeded"
-    end
-
-    it 'expects balance to equal limit constant' do
-      subject.top_up(90)
-      expect(subject.balance).to eq Oystercard::LIMIT
     end
   end
 
@@ -75,13 +70,5 @@ describe Oystercard do
       end
     end
 
-    describe 'journey history' do
-      it 'should store the journey' do
-        pending('Currently playing around with the journey_history method')
-        subject.touch_in()
-
-        expect(subject.journey_history).to include(entry_station => exit_station)
-      end
-    end
   end
 end

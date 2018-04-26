@@ -1,5 +1,3 @@
-require 'journey'
-
 describe Journey do
   let(:entry_station) { double 'Station A' }
   let(:subject) { Journey.new(entry_station)}
