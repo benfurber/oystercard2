@@ -1,5 +1,3 @@
-require 'oystercard'
-
 describe Oystercard do
   it 'should have £0 #balance on setup' do
     expect(subject.balance).to eq 0
