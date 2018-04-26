@@ -33,6 +33,7 @@ describe Oystercard do
   context 'journey card usage' do
     let(:entry_station) { 'Station A' }
     let(:exit_station) { 'Station B' }
+    let(:fake_journey) { double 'journey' }
 
     def top_up_touch_in
       subject.top_up(10)
@@ -51,6 +52,11 @@ describe Oystercard do
 
       it 'should raise an error when balance is below minimum' do
         expect { subject.touch_in(entry_station) }.to raise_error RuntimeError
+      end
+
+      it 'should store the Journey object in #journey_history' do
+        top_up_touch_in
+        expect(subject.journey_history).to include(an_instance_of(Journey))
       end
     end
 
@@ -73,7 +79,9 @@ describe Oystercard do
 
     describe 'journey history' do
       it 'should store the journey' do
-        top_up_touch_in_touch_out
+        pending('Currently playing around with the journey_history method')
+        subject.touch_in()
+
         expect(subject.journey_history).to include(entry_station => exit_station)
       end
     end

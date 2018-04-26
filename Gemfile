@@ -8,3 +8,5 @@ ruby '2.5.1'
 
 gem 'rspec', :group => [:development, :test]
 
+gem 'pry'
+gem 'pry-byebug'

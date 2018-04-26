@@ -1,22 +1,22 @@
 # Details about the journey and history for Oystercard
 class Journey
-  attr_reader :entry_station, :journey_history
+  attr_reader :entry_station, :exit_station
 
-  def initialize(minimum_value)
-    @journey_history = {}
-    @MINIMUM_VALUE = minimum_value
-  end
-
-  def in_journey?
-    @entry_station != nil
-  end
-
-  def touch_in(entry_station)
+  def initialize(entry_station = nil)
     @entry_station = entry_station
+    @complete = false
   end
 
-  def touch_out(exit_station)
-    @journey_history[entry_station] = exit_station
-    @entry_station = nil
+  def add_exit_station(exit_station)
+    @exit_station = exit_station
+    set_complete
+  end
+
+  def set_complete
+    @complete = true
+  end
+
+  def complete?
+    @complete
   end
 end

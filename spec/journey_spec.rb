@@ -1,55 +1,36 @@
 require 'journey'
 
 describe Journey do
-  let(:oyster) { Oystercard.new }
-  let(:subject) { Journey.new(1)} # KNOWN PROBLEM: USING A MAIC NUM
+  let(:entry_station) { double 'Station A' }
+  let(:subject) { Journey.new(entry_station)} # KNOWN PROBLEM: USING A MAGIC NUM
 
   context 'On set-up' do
-    it '#in_journey? should be false' do
-      expect(subject.in_journey?).to eq false
+    it 'it has an entry station when provided' do
+      expect(subject.entry_station).to eq entry_station
     end
 
-    it 'should have an empty @journey_history' do
-      expect(subject.journey_history).to be_empty
+    it 'defaults to nil when no entry station is provided' do
+      new_journey = Journey.new
+      expect(new_journey.entry_station).to eq nil
+    end
+
+    it '#complete? should be false' do
+      expect(subject.complete?).to eq false
     end
   end
 
   context 'journey card usage' do
-    let(:entry_station) { 'Station A' }
     let(:exit_station) { 'Station B' }
+    before { subject.add_exit_station(exit_station) }
 
-    def touch_in_touch_out
-      subject.touch_in(entry_station)
-      subject.touch_out(exit_station)
-    end
-
-    describe '#touch_in method' do
-      it 'should respond to #touch_in' do
-        subject.touch_in(entry_station)
-        expect(subject.in_journey?).to eq true
+    describe '#add_exit_station method' do
+      it 'should respond to #add_exit_station' do
+        expect(subject.exit_station).to be exit_station
       end
 
-    end
-
-    describe '#touch_out method' do
-      it 'should respond to #touch_out' do
-        touch_in_touch_out
-        expect(subject.in_journey?).to eq false
-      end
-
-      it 'should record the journey' do
-        touch_in_touch_out
-        expect(subject.journey_history.length).to eq 1
+      it 'then turns #complete? to true' do
+        expect(subject.complete?).to be true
       end
     end
-
-    describe 'journey history' do
-      it 'should store the journey' do
-        touch_in_touch_out
-        expect(subject.journey_history).to include(entry_station => exit_station)
-      end
-    end
-
   end
-
 end

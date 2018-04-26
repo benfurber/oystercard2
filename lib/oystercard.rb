@@ -1,33 +1,34 @@
 require 'journey'
+require 'pry'
+require 'pry-byebug'
+
 
 # The main Ostercard object
 class Oystercard
-  attr_reader :balance
+  attr_reader :balance, :journey_history
 
   LIMIT = 90
   MINIMUM_VALUE = 1
 
   def initialize
     @balance = 0
-    @journey = Journey.new(MINIMUM_VALUE)
+    @journey_history = []
+    @in_journey = false
   end
 
   def in_journey?
-    @journey.in_journey?
-  end
-
-  def journey_history
-    @journey.journey_history
+    return false if @journey_history.empty?
+    !@journey_history.last.complete?
   end
 
   def touch_in(entry_station)
     raise 'Minimum card balance required' if @balance < MINIMUM_VALUE
-    @journey.touch_in(entry_station)
+    create_journey(entry_station)
   end
 
   def touch_out(exit_station)
     deduct(MINIMUM_VALUE)
-    @journey.touch_out(exit_station)
+    @journey_history.last.add_exit_station(exit_station)
   end
 
   def top_up(value)
@@ -40,5 +41,9 @@ class Oystercard
   def deduct(value)
     raise 'Invalid amount' if value < 0
     @balance -= value
+  end
+
+  def create_journey(entry_station)
+    @journey_history << Journey.new(entry_station)
   end
 end
