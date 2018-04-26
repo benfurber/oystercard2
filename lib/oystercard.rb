@@ -18,17 +18,19 @@ class Oystercard
 
   def in_journey?
     return false if @journey_history.empty?
-    !@journey_history.last.complete?
+    !current_journey.complete?
   end
 
   def touch_in(entry_station)
+    touch_in_check
     raise 'Minimum card balance required' if @balance < MINIMUM_VALUE
     create_journey(entry_station)
   end
 
   def touch_out(exit_station)
-    deduct(MINIMUM_VALUE)
-    @journey_history.last.add_exit_station(exit_station)
+    create_journey if !in_journey?
+    current_journey.add_exit_station(exit_station)
+    deduct(current_journey.fare)
   end
 
   def top_up(value)
@@ -43,7 +45,18 @@ class Oystercard
     @balance -= value
   end
 
-  def create_journey(entry_station)
+  def create_journey(entry_station =nil)
     @journey_history << Journey.new(entry_station)
+  end
+
+  def current_journey
+    @journey_history.last
+  end
+
+  def touch_in_check
+    if current_journey && !current_journey.complete?
+      current_journey.add_exit_station
+      deduct(current_journey.fare)
+    end
   end
 end
