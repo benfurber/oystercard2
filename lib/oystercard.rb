@@ -9,9 +9,9 @@ class Oystercard
   LIMIT = 90
   MINIMUM_VALUE = 1
 
-  def initialize
+  def initialize(log_type = Journeylog)
     @balance = 0
-    @journey_log = Journeylog.new
+    @journey_log = log_type.new
     @in_journey = false
   end
 

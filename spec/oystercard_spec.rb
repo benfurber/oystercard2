@@ -26,12 +26,12 @@ describe Oystercard do
   context 'journey card usage' do
     let(:entry_station) { 'Station A' }
     let(:exit_station) { 'Station B' }
-    let(:fake_journey) { double 'journey' }
 
     def top_up_touch_in
       subject.top_up(10)
       subject.touch_in(entry_station)
     end
+
     def top_up_touch_in_touch_out
       top_up_touch_in
       subject.touch_out(exit_station)
@@ -57,7 +57,8 @@ describe Oystercard do
 
       it 'should reduce card balance by the minimum fare' do
         top_up_touch_in
-        expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_VALUE)
+        expect{ subject.touch_out(exit_station) }.to change {
+          subject.balance }.by(-Oystercard::MINIMUM_VALUE)
       end
     end
 
