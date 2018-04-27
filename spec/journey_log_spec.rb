@@ -33,6 +33,7 @@ describe Journeylog do
       expect(subject.complete?).to be false
     end
   end
+
   context '#fare' do
     it 'returns penalty fare on double start' do
       subject.start(entry_station)
@@ -50,4 +51,14 @@ describe Journeylog do
       expect(subject.fare).to eq 1
     end
   end
+
+  context '#journeys' do
+    it 'should not allow removals/any manipulation to the #journey_history' do
+      subject.start(entry_station)
+      subject.finish(entry_station)
+      subject.journey_history.pop
+      expect(subject.journey_history.length).to eq 1
+    end
+  end
+
 end

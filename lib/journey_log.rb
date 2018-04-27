@@ -1,7 +1,11 @@
 require_relative 'journey.rb'
 
 class Journeylog
-  attr_reader :journey_history, :current
+  attr_reader :current
+
+  def journey_history
+    @journey_history.dup
+  end
 
   def initialize(journey_class = Journey)
     @journey_history = []
@@ -16,7 +20,6 @@ class Journeylog
   def finish(exit_station)
     current_journey
     @current.add_exit_station(exit_station)
-
   end
 
   def complete?
