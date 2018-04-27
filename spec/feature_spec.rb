@@ -23,11 +23,20 @@ describe 'Feature Test', :feature do
     expect(oystercard.balance).to eq 4
   end
 
-  it 'tries to touch out twice and deducted penalty fare' do
+  it 'tries to touch out once and deducted penalty fare' do
     oystercard.top_up(10)
     oystercard.touch_out(exit_station)
     expect(oystercard).not_to be_in_journey
     expect(oystercard.journey_log.journey_history.count).to eq 1
     expect(oystercard.balance).to eq 4
+  end
+
+  it 'logs standard journey and deducts normal fare when touch in penalty and then touch out' do
+    oystercard.top_up(20)
+    oystercard.touch_in(entry_station)
+    oystercard.touch_in(entry_station)
+    expect(oystercard.balance).to eq 14
+    oystercard.touch_out(exit_station)
+    expect(oystercard.balance).to eq 13
   end
 end

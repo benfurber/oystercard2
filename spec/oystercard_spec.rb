@@ -47,9 +47,6 @@ describe Oystercard do
         expect { subject.touch_in(entry_station) }.to raise_error RuntimeError
       end
 
-      it 'should send the right message to #journey_log' do
-        expect(journey_log).to receive(:start).with(entry_station)
-      end
     end
 
     describe '#touch_out method' do
@@ -61,11 +58,6 @@ describe Oystercard do
       it 'should reduce card balance by the minimum fare' do
         top_up_touch_in
         expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::MINIMUM_VALUE)
-      end
-
-      it 'should record the journey' do
-        top_up_touch_in_touch_out
-        expect(subject.journey_history.length).to eq 1
       end
     end
 

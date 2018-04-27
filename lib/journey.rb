@@ -13,14 +13,13 @@ class Journey
   def add_exit_station(exit_station = nil)
     @exit_station = exit_station
     set_complete
-    set_fare
   end
 
   def complete?
     @complete
   end
 
-  def set_fare
+  def fare
     @fare = !entry_station || !exit_station ? 6 : 1
   end
 

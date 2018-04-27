@@ -1,4 +1,4 @@
-require 'journey'
+require_relative 'journey_log.rb'
 require 'pry'
 require 'pry-byebug'
 
@@ -17,7 +17,7 @@ class Oystercard
 
   def in_journey?
     return false if @journey_log.journey_history.empty?
-    !current_journey.complete?
+    !@journey_log.current.complete?
   end
 
   def touch_in(entry_station)
@@ -29,7 +29,7 @@ class Oystercard
   def touch_out(exit_station)
     create_journey if !in_journey?
     journey_log.finish(exit_station)
-    deduct(current_journey.fare)
+    deduct(@journey_log.fare)
   end
 
   def top_up(value)
@@ -48,14 +48,9 @@ class Oystercard
     @journey_log.start(entry_station)
   end
 
-  def current_journey
-    @journey_log.journey_history.last
-  end
-
   def touch_in_check
-    if current_journey && !current_journey.complete?
-      current_journey.add_exit_station
-      deduct(current_journey.fare)
+    if @journey_log.complete?
+      deduct(@journey_log.fare)
     end
   end
 end
