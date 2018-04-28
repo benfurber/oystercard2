@@ -1,14 +1,42 @@
 describe Oystercard do
-  it 'should have £0 #balance on setup' do
-    expect(subject.balance).to eq 0
+  let(:entry_station) { 'Station A' }
+  let(:exit_station) { 'Station B' }
+
+  # These two sets of steps are completed a lot
+  def top_up_touch_in
+    subject.top_up(10)
+    subject.touch_in(entry_station)
   end
 
-  it '#in_journey? should be false' do
-    expect(subject.in_journey?).to eq false
+  def top_up_touch_in_touch_out
+    top_up_touch_in
+    subject.touch_out(exit_station)
   end
 
-  it 'should have a @journey_log' do
-    expect(subject.journey_log).to be_an_instance_of(Journeylog)
+  context 'On initialization' do
+    it '#balance should have £0' do
+      expect(subject.balance).to eq 0
+    end
+
+    it '#in_journey? should be false' do
+      expect(subject.in_journey?).to eq false
+    end
+
+    it '@journey_log should exist' do
+      expect(subject.journey_log).to be_an_instance_of(Journeylog)
+    end
+  end
+
+  context '#in_journey?' do
+    it 'should return TRUE when a journey has been started' do
+      top_up_touch_in
+      expect(subject.in_journey?).to be true
+    end
+
+    it 'should return FALSE when a journey has been completed' do
+      top_up_touch_in_touch_out
+      expect(subject.in_journey?).to be false
+    end
   end
 
   describe '#top_up' do
@@ -24,19 +52,6 @@ describe Oystercard do
   end
 
   context 'journey card usage' do
-    let(:entry_station) { 'Station A' }
-    let(:exit_station) { 'Station B' }
-
-    def top_up_touch_in
-      subject.top_up(10)
-      subject.touch_in(entry_station)
-    end
-
-    def top_up_touch_in_touch_out
-      top_up_touch_in
-      subject.touch_out(exit_station)
-    end
-
     describe '#touch_in method' do
       it 'should respond to #touch_in' do
         top_up_touch_in
@@ -61,6 +76,5 @@ describe Oystercard do
           subject.balance }.by(-Oystercard::MINIMUM_VALUE)
       end
     end
-
   end
 end

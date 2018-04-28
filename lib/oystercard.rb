@@ -17,7 +17,7 @@ class Oystercard
 
   def in_journey?
     return false if @journey_log.journey_history.empty?
-    !@journey_log.current.complete?
+    @journey_log.complete?
   end
 
   def touch_in(entry_station)
